@@ -29,7 +29,7 @@ std :: regex vector_regex = std :: regex (R"(\s* \s*)");
 std :: array < std :: string, 4 > NRRD_REQUIRED_FIELDS {"dimension", "type", "encoding", "sizes"};
 
 
-enum{  _uchar = 0, _int16
+enum{  _uchar = 0, _int16, _float
   }; // dtype;
 
 enum{  _gzip = 0,  _bzip2, _raw, _txt
@@ -38,7 +38,8 @@ enum{  _gzip = 0,  _bzip2, _raw, _txt
 const std :: unordered_map < std :: string, int > dtype { {"unsigned char", _uchar},
                                                           {"unsigned int", _int16},
                                                           {"short", _int16},
-                                                          {"int16", _int16}
+                                                          {"int16", _int16},
+                                                          {"float", _float}
                                                           };
 
 const std :: unordered_map < std :: string, int > compress { {"gzip", _gzip},
@@ -272,6 +273,10 @@ std :: vector < cv :: Mat > read_nrrd (const std :: string & filename, const boo
 
     case _int16:
       slices = read_slices < short >(is, num_slices, w, h, compression);
+    break;
+
+    case _float:
+      slices = read_slices < float >(is, num_slices, w, h, compression);
     break;
 
     default:
